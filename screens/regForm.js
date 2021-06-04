@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { View, Button, TextInput, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Button, TextInput, ScrollView, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import firebase from '../database/firebase';
+
+{/* var width = Dimensions.get('window').width;
+var height = Dimensions.get('window').height;
+var loaderAnimation = false; */}
 
 const regForm = () => {
 
@@ -21,7 +25,7 @@ const regForm = () => {
     };
 
     const saveNewUser = async () => {
-        
+        {/* loaderAnimation=true; */}
         await firebase.db.collection('users').add({
             firstName: state.firstName,
             lastName: state.lastName,
@@ -32,9 +36,12 @@ const regForm = () => {
             neighborhood: state.neighborhood,
             email: state.email,
         });
-        
+        { /* loaderAnimation=false; */}
         alert("Registro exitoso");
     };
+
+
+
 
     return(
         <ScrollView style={styles.container} >
@@ -108,19 +115,19 @@ const regForm = () => {
                 />
             </View>
 
-            <View style={[styles.containerActInd, styles.horizontal]}>
-                <ActivityIndicator
-                    size="large" 
-                    color="#00ff00"
-                    animating={false}
+{/*             <View style={[styles.containerActInd, styles.horizontal]}>
+            <ActivityIndicator
+                size="large" 
+                color="#00ff00"
+                animating={loaderAnimation}
                 />
-            </View>
+            </View> */}
 
         </ScrollView>
     )
 }
 
-const styles = StyleSheet.create({
+    const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 35,
@@ -132,10 +139,20 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#cccccc'
     },
-    containerActInd:{
+/*      containerActInd:{
         flex: 1,
-        justifyContent: "center"
-    },
+        zIndex: "1",
+        elevation: "1",
+        position: 'absolute',
+        top: -35,
+        left:-30,
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: width,
+        height: height-65
+        
+    }, */
     horizontal: {
         flexDirection: "row",
         justifyContent: "space-around",

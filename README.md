@@ -27,3 +27,4 @@ npm install @react-navigation/stack
 ```
 
 [Label for textinputs](https://callstack.github.io/react-native-paper/text-input.html)
+[loader](https://stackoverflow.com/questions/38780554/react-native-displaying-a-loading-screen-component-in-a-javascript-promise)
