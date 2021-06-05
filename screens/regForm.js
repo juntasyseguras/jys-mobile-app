@@ -1,133 +1,139 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { View, Button, TextInput, ScrollView, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import firebase from '../database/firebase';
+import Loader from '../components/loader';
 
 {/* var width = Dimensions.get('window').width;
 var height = Dimensions.get('window').height;
 var loaderAnimation = false; */}
 
-const regForm = () => {
+class regForm extends Component {
 
     // This is the inital state
-    const [state, setstate] = useState({
-        firstName:'',
-        lastName:'',
-        age:'',
-        childrenQty:'',
-        city:'',
-        phone:'',
-        neighborhood:'',
-        email: ''
-    });
+    constructor(props) {
+        super(props);
 
-    const handleChangeText = (name, value) => {
-        setstate({...state, [name]: value});
-    };
+        this.state = {
+            firstName:'',
+            lastName:'',
+            age:'',
+            childrenQty:'',
+            city:'',
+            phone:'',
+            neighborhood:'',
+            email: '',
+            loading: false,
+        };
 
-    const saveNewUser = async () => {
-        {/* loaderAnimation=true; */}
+    }
+
+
+    async saveNewUser(){
+        
+        this.setState({ loading: true });
+
         await firebase.db.collection('users').add({
-            firstName: state.firstName,
-            lastName: state.lastName,
-            age: state.age,
-            childrenQty: state.childrenQty,
-            city: state.city,
-            phone: state.phone,
-            neighborhood: state.neighborhood,
-            email: state.email,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            age: this.state.age,
+            childrenQty: this.state.childrenQty,
+            city: this.state.city,
+            phone: this.state.phone,
+            neighborhood: this.state.neighborhood,
+            email: this.state.email,
         });
         { /* loaderAnimation=false; */}
+        this.setState({ loading: false });
         alert("Registro exitoso");
-    };
+    }
 
+    render() {
+        return(
 
+            <View style={styles.container}>
+            
+                <Loader loading={this.state.loading}/>
 
+                <ScrollView>
+        
+                    <View style={styles.inputGroup} >
+                        <TextInput 
+                            placeholder="Nombres" 
+                            onChangeText={ (value) => this.setState({ firstName: value}) } 
+                        /> 
+                    </View>
+        
+                    <View style={styles.inputGroup} >
+                        <TextInput 
+                            placeholder="Apellidos"
+                            onChangeText={ (value) => this.setState({ lastName: value})} 
+                        />
+                    </View>
+        
+                    <View style={styles.inputGroup} >
+                        <TextInput 
+                            placeholder="Edad"
+                            onChangeText={ (value) => this.setState({ age: value})} 
+                        />
+                            
+                    </View>
+                    <View style={styles.inputGroup} >
+                        <TextInput 
+                            placeholder="# hijos"
+                            onChangeText={ (value) => this.setState({ childrenQty: value})} 
+                        />
+        
+                    </View>
+        
+                    <View style={styles.inputGroup} >
+                        <TextInput 
+                            placeholder="Ciudad"
+                            onChangeText={ (value) => this.setState({ city: value})} 
+                        />
+        
+                    </View>
+        
+                    <View style={styles.inputGroup} >
+                        <TextInput 
+                            placeholder="Celular"
+                            onChangeText={ (value) => this.setState({ phone: value})} 
+                        />
+        
+                    </View>
+        
+                    <View style={styles.inputGroup} >
+                        <TextInput 
+                            placeholder="Barrio"
+                            onChangeText={ (value) => this.setState({ neighborhood: value})} 
+                        />
+        
+                    </View>
+        
+                    <View style={styles.inputGroup} >
+                        <TextInput 
+                            placeholder="Correo electrónico"
+                            onChangeText={ (value) => this.setState({ email: value})} 
+                        />
+        
+                    </View>
+        
+                    <View style={styles.inputGroup} >
+                        <Button 
+                            title="Registrarse"
+                            onPress={ () => this.saveNewUser() }
+        
+                        />
+                    </View>
 
-    return(
-        <ScrollView style={styles.container} >
-
-            <View style={styles.inputGroup} >
-                <TextInput 
-                    placeholder="Nombres" 
-                    onChangeText={ (value) => handleChangeText('firstName', value)} 
-                /> 
+                </ScrollView>
+            
             </View>
+        )
+    }
 
-            <View style={styles.inputGroup} >
-                <TextInput 
-                    placeholder="Apellidos"
-                    onChangeText={ (value) => handleChangeText('lastName', value)} 
-                />
-            </View>
-
-            <View style={styles.inputGroup} >
-                <TextInput 
-                    placeholder="Edad"
-                    onChangeText={ (value) => handleChangeText('age', value)}
-                />
-                    
-            </View>
-            <View style={styles.inputGroup} >
-                <TextInput 
-                    placeholder="# hijos"
-                    onChangeText={ (value) => handleChangeText('childrenQty', value)}
-                />
-
-            </View>
-
-            <View style={styles.inputGroup} >
-                <TextInput 
-                    placeholder="Ciudad"
-                    onChangeText={ (value) => handleChangeText('city', value)}
-                />
-
-            </View>
-
-            <View style={styles.inputGroup} >
-                <TextInput 
-                    placeholder="Celular"
-                    onChangeText={ (value) => handleChangeText('phone', value)}
-                />
-
-            </View>
-
-            <View style={styles.inputGroup} >
-                <TextInput 
-                    placeholder="Barrio"
-                    onChangeText={ (value) => handleChangeText('neighborhood', value)}
-                />
-
-            </View>
-
-            <View style={styles.inputGroup} >
-                <TextInput 
-                    placeholder="Correo electrónico"
-                    onChangeText={ (value) => handleChangeText('email', value)}
-                />
-
-            </View>
-
-            <View style={styles.inputGroup} >
-                <Button 
-                    title="Registrarse"
-                    onPress={ () => saveNewUser() }
-
-                />
-            </View>
-
-{/*             <View style={[styles.containerActInd, styles.horizontal]}>
-            <ActivityIndicator
-                size="large" 
-                color="#00ff00"
-                animating={loaderAnimation}
-                />
-            </View> */}
-
-        </ScrollView>
-    )
 }
 
-    const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 35,
